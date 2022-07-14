@@ -54,6 +54,17 @@ const removeItems = (li) => {
   localStorage.setItem('items', JSON.stringify(localData));
 };
 
+// Helper function to update edited task
+const updateEdited = () => {
+  const editItem = document.querySelectorAll('.ellipsis');
+  editItem.forEach((item) => {
+    item.addEventListener('click', () => {
+      item.parentNode.classList.add('clicked-on');
+      editItems(item.previousElementSibling);
+    });
+  });
+};
+
 // Add new task
 const addNewTask = (newDescription) => {
   const newTask = document.createElement('div');
@@ -86,14 +97,9 @@ const addNewTask = (newDescription) => {
   taskArray.push(newListItem);
   const stringedItems = JSON.stringify(taskArray);
   localStorage.setItem('items', stringedItems);
-  // Edit task
-  const editItem = document.querySelectorAll('.ellipsis');
-  editItem.forEach((item) => {
-    item.addEventListener('click', () => {
-      item.parentNode.classList.add('clicked-on');
-      editItems(item.previousElementSibling);
-    });
-  });
+
+  updateEdited();
+
   // Remove tasks
   const removeItem = document.querySelectorAll('.trashcan');
   removeItem.forEach((item) => {
@@ -138,13 +144,8 @@ const getItemsLocal = () => {
   </span>
   `;
     listOfTasks.appendChild(newItemList);
-    const editItem = document.querySelectorAll('.ellipsis');
-    editItem.forEach((item) => {
-      item.addEventListener('click', () => {
-        item.parentNode.classList.add('clicked-on');
-        editItems(item.previousElementSibling, newItemList);
-      });
-    });
+
+    updateEdited();
     return null;
   });
 
